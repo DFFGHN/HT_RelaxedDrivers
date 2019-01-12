@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../main/layui/css/layui.css">
+    <link rel="stylesheet" href="../main/layui/css/modules/code.css">
+    <script src="../main/layui/jquery-1.12.4.min.js"></script>
+    <script src="../main/layui/layui.js"></script>
+
+    <script type="text/javascript">
+        function mainClick(url) {
+            $("#mainBody").load(url);
+        }
+    </script>
+    <style type="text/css">
+        .float {
+            width: 30%;
+            height: 100%;
+            float: left;
+            text-align: center;
+        }
+
+        .float b {
+            color: blue;
+        }
+    </style>
+
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo"><h2>轻松驾校</h2></div>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item"><a href="javascript:;" th:text="${sysuser.uname }">
+                <img src="../layui/images/face/0.gif" class="layui-nav-img" height="22" width="22"/>
+            </a>
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a href="">基本资料</a>
+                    </dd>
+                    <dd>
+                        <a href="">安全设置</a>
+                    </dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a
+                    href="/sysu/logOut">退出系统</a></li>
+        </ul>
+    </div>
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" th:each="p:${resonceList}">
+                <li class="layui-nav-item"><a href="javascript:void(0)" th:text="${p.pname}"></a>
+                    <ul class="layui-nav-child" th:each="subp:${p.subPrivilegs}">
+                        <li>
+                            <a href="javascript:void(0)" th:text="${subp.pname }"
+                               th:onclick="mainClick([[${subp.purl}]])"></a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="layui-body" id="mainBody" align="center"></div>
+    <div class="layui-footer">
+        <div class="float">用户权限:<b th:text="${sysuser.rname }"></b></div>
+        <div class="float">用户名:<b th:text="${sysuser.uname }"></b></div>
+        <div class="float">登录时间:<b th:text="${nowDate }"></b></div>
+        <br/>
+    </div>
+</div>
+<script src="../main/layui/layui.all.js"></script>
+</body>
+</html>

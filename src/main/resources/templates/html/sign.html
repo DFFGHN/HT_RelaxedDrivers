@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../main/layui/css/layui.css">
+    <script src="../main/layui/layui.js"></script>
+
+    <script>
+        layui.use('table', function () {
+            var table = layui.table;
+            table.render({
+                elem: '#tbsin'
+                //,count:count
+                , url: '../sign/findAll'
+                , id: "tbsinReload"
+                , page: true
+                , limits: [5, 10, 15]
+                , limit: 5 //每页默认显示的数量
+                , cols: [[
+                    {field: 'signo', title: '报名序号', sort: true}
+                    , {field: 'nickname', title: '用户'}
+                    , {field: 'drivername', title: '科目'}
+                    , {field: 'schoolname', title: '学校'}
+                    , {field: 'mealname', title: '套餐'}
+                    , {field: 'paytype', title: '支付方式'}
+                    , {field: 'sigtime', title: '报名时间'}
+                    , {field: 'state', title: '报考状态'}
+                ]]
+            });
+            var $ = layui.$, active = {
+                reload: function () {
+                    var n1 = $('#n1').val();
+                    var n2 = $('#n2').val();
+                    //执行重载
+                    table.reload('tbsinReload', {
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                        , where: {
+                            nickname: n1, schoolname: n2
+                        }
+                    });
+                }
+            };
+            $('.demoTable .layui-btn').on('click', function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+        });
+
+    </script>
+</head>
+<body>
+<div class="demoTable">
+    昵称:
+    <div class="layui-inline">
+        <input class="layui-input" name="nickname" id="n1" autocomplete="off">
+    </div>
+    驾校:
+    <div class="layui-inline">
+        <input class="layui-input" name="schoolname" id="n2" autocomplete="off">
+    </div>
+    <button class="layui-btn" data-type="reload">搜索</button>
+</div>
+<table class="layui-hide" id="tbsin" lay-filter="user"></table>
+
+</body>
+</html>
